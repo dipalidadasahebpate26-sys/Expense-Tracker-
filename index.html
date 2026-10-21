@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+
+    <style>
+        body{
+             font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #263f5e;
+            margin: 0;
+            padding: 50px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main{
+            background-color: #223352;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
+            width: 100%;
+            max-width: 350px;
+        }
+        h1{
+            text-align: center;
+            margin-top: 0;
+            color: #38bdf8;
+            letter-spacing: 0.5px;
+        }
+
+        h3{
+           
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+        .item,.amnt{
+
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1.5px solid #dcdde1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+            background:#0f172a;
+            color: white;
+            transition: border-color 0.2s;
+        }
+
+        .add{
+            width: 100%;
+            padding: 12px;
+            background: #0284c7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+        .add:hover{
+            background: #0369a1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li{
+            background-color: #f1f2f6;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+    </style>
+
+</head>
+<body>
+    
+    <div class="main">
+        <h1>Expense Tracker </h1>
+
+        <h3>Total Spent : $<span class="totalAmnt">0</span></h3>
+
+        <input type="text" placeholder="Enter what did you buy " class="item">
+        <br>
+        <input type="text" placeholder="Enter amount " class="amnt">
+        <br>
+        <button class="add">Add Expense</button>
+
+        <ul class="list"></ul>
+    </div>
+</body>
+
+<script>
+    const userInput=document.querySelector(".item");
+    const userAmount=document.querySelector(".amnt");
+    const addBtn=document.querySelector(".add");
+    const list=document.querySelector(".list");
+    const showAmnt=document.querySelector(".totalAmnt");
+
+    let totalAmount=0;
+    addBtn.addEventListener("click", ()=>{
+        const itemName=userInput.value.trim();
+        const itemAmount=parseFloat(userAmount.value);
+
+        if(itemName==="" || isNaN(itemAmount) || itemAmount<=0){
+            alert("Plz enter a valid item name and item amount ");
+        }
+        // add the amount in totalAmount 
+        totalAmount+=itemAmount;
+        showAmnt.innerHTML=totalAmount;
+
+        // now add the task in the list 
+        const newli=document.createElement("li");
+
+        newli.innerHTML=itemName + " - $"+itemAmount;
+
+        list.appendChild(newli);
+
+        userAmount.value="";
+        userInput.value="";
+    });
+</script>
+</html>
