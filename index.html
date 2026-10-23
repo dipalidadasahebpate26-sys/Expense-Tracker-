@@ -54,7 +54,7 @@
             transition: border-color 0.2s;
         }
 
-        .add{
+        .add, .clear{
             width: 100%;
             padding: 12px;
             background: #0284c7;
@@ -105,6 +105,7 @@
         <input type="text" placeholder="Enter amount " class="amnt">
         <br>
         <button class="add">Add Expense</button>
+        <button class="clear">Clear All</button>
 
         <ul class="list"></ul>
     </div>
@@ -117,7 +118,26 @@
     const list=document.querySelector(".list");
     const showAmnt=document.querySelector(".totalAmnt");
 
-    let totalAmount=0;
+    // get if items are stored in memory
+
+    let totalExpense=parseFloat(localStorage.getItem("savedExpense")) || 0; // when nothing is stored then totalexpense is 0 as before
+    showAmnt.innerHTML=totalExpense;
+
+    // get all stored items-expens (in array )
+    let expenseArray=JSON.parse(localStorage.getItem("savedList")) || [];
+
+    // function which runs always like it shows all stored data 
+    function loadStoredData(){
+        // loop on the array and show its each task 
+        expenseArray.forEach((item) => {
+            let li=document.createElement("li");
+            li.innerHTML=item;
+            list.appendChild(li);
+        });
+    }
+
+    loadStoredData();
+
     addBtn.addEventListener("click", ()=>{
         const itemName=userInput.value.trim();
         const itemAmount=parseFloat(userAmount.value);
@@ -126,8 +146,8 @@
             alert("Plz enter a valid item name and item amount ");
         }
         // add the amount in totalAmount 
-        totalAmount+=itemAmount;
-        showAmnt.innerHTML=totalAmount;
+        totalExpense+=itemAmount;
+        showAmnt.innerHTML=totalExpense;
 
         // now add the task in the list 
         const newli=document.createElement("li");
@@ -136,8 +156,25 @@
 
         list.appendChild(newli);
 
+        // newli contains our new added item..so push it in our saved array and 
+        // save our updated array
+
+        expenseArray.push(newli.innerHTML);
+
+        localStorage.setItem("savedList",JSON.stringify(expenseArray));
+        // and also our totalexpense is updated so save it 
+        localStorage.setItem("savedExpense",totalExpense);
+
         userAmount.value="";
         userInput.value="";
     });
+
+    const clearAll=document.querySelector(".clear");
+
+    clearAll.addEventListener("click", ()=>{
+        localStorage.removeItem("savedExpense");
+        localStorage.removeItem("savedList");
+        location.reload();
+    })
 </script>
 </html>
